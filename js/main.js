@@ -657,7 +657,7 @@ var followers = {
       first: true
     }; 
 
-    api.call('subscriptions.getFollowers', {count: 1, uid: cur.followers.uid, offset: 0}, function(r) {
+    api.call('users.getFollowers', {count: 1, uid: cur.followers.uid, offset: 0}, function(r) {
       cur.followers.count = r.response ? intval(r.response.count) : 0;
       followers.get_users();  
     });
@@ -671,7 +671,7 @@ var followers = {
       ge('feed_summary').innerHTML = "Осталось загрузить "+userFunction.numFormat(cur.followers.count-cur.followers.offset)+" подписчиков";
       show('feed_progress');
 
-      var code = 'var a = []; var p = []; var i = 0; var o = '+intval(cur.followers.offset)+'; var uid = '+intval(cur.followers.uid)+';var fields = "sex,education,online,bdate,photo_medium_rec,city,country,rate,relation"; while(i < 1) { a = API.subscriptions.getFollowers({uid: uid, offset: o, count: 1000}); if(parseInt(a.users[0]) == 0) return p; p = p + API.getProfiles({uids: a.users, fields:fields}); o = o + 1000; if (parseInt(a.users[999]) == 0) return p; i = i+1; } return p;';
+      var code = 'var a = []; var p = []; var i = 0; var o = '+intval(cur.followers.offset)+'; var uid = '+intval(cur.followers.uid)+';var fields = "sex,education,online,bdate,photo_medium_rec,city,country,rate,relation"; while(i < 1) { a = API.users.getFollowers({uid: uid, offset: o, count: 1000}); if(parseInt(a.users[0]) == 0) return p; p = p + API.getProfiles({uids: a.users, fields:fields}); o = o + 1000; if (parseInt(a.users[999]) == 0) return p; i = i+1; } return p;';
       
       api.call('execute', {code:code}, function(r) {
         if(r.response) {
